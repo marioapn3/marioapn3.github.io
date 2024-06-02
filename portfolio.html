@@ -76,18 +76,301 @@
                }
           }
 
-          .carousel-control-prev,
-          .carousel-control-next {
-               color: black;
-               background-color: rgb(95, 93, 93);
+          /*------------------------------------*\
+  #ROOT
+\*------------------------------------*/
+          :root {
+               --clr-primary-100: hsl(210, 100%, 60%);
+               --clr-primary-200: hsl(210, 100%, 50%);
+               --clr-primary-300: hsl(210, 100%, 35%);
+               --clr-primary-400: hsl(210, 100%, 25%);
+               --clr-primary-500: hsl(210, 100%, 16%);
+
+               --clr-neutral-100: hsl(213, 22%, 100%);
+               --clr-neutral-200: hsl(213, 22%, 92%);
+               --clr-neutral-300: hsl(213, 22%, 80%);
+               --clr-neutral-400: hsl(212, 21%, 56%);
+               --clr-neutral-500: hsl(212, 21%, 36%);
+               --clr-neutral-600: hsl(212, 21%, 28%);
+               --clr-neutral-700: hsl(213, 22%, 20%);
+               --clr-neutral-800: hsl(212, 21%, 14%);
+               --clr-neutral-900: hsl(213, 22%, 8%);
+
+               --ff-primary: 'Source Sans Pro', sans-serif;
+               --ff-secondary: 'Noto Serif', serif;
+
+               --fw-regular: 400;
+               --fw-bold: 700;
+
+               --fs-300: 0.875rem;
+               --fs-400: 1rem;
+               --fs-500: 1.25rem;
+               --fs-600: 1.5rem;
+               --fs-700: 2rem;
+               --fs-800: 3rem;
+               --fs-900: 5rem;
+
+               --fs-300: clamp(0.75rem, calc(0.82rem + -0.09vw), 0.80rem);
+               --fs-400: clamp(1.00rem, calc(1.00rem + 0.00vw), 1.00rem);
+               --fs-500: clamp(1.25rem, calc(1.22rem + 0.14vw), 1.33rem);
+               --fs-600: clamp(1.56rem, calc(1.49rem + 0.37vw), 1.78rem);
+               --fs-700: clamp(1.95rem, calc(1.81rem + 0.72vw), 2.37rem);
+               --fs-800: clamp(2.44rem, calc(2.19rem + 1.25vw), 3.16rem);
+               --fs-900: clamp(3.05rem, calc(2.65rem + 2.01vw), 4.21rem);
+
+               --transition: 300ms ease;
+          }
+
+          /*------------------------------------*\
+  #RESET
+  https://andy-bell.co.uk/a-modern-css-reset/
+\*------------------------------------*/
+          *,
+          *::before,
+          *::after {
+               box-sizing: border-box;
+          }
+
+          * {
+               margin: 0;
+               font: inherit;
+          }
+
+          html:focus-within {
+               scroll-behavior: smooth;
+          }
+
+          body {
+               min-height: 100vh;
+
+               background-color: var(--clr-neutral-800);
+               color: var(--clr-neutral-200);
+
+               font-family: var(--ff-primary);
+               font-size: var(--fs-400);
+               font-weight: var(--fw-regular);
+               line-height: 1.5;
+          }
+
+          h1,
+          h2,
+          h3 {
+               line-height: 1.1;
+               font-family: var(--ff-secondary);
+               font-weight: var(--fw-bold);
+          }
+
+          ul[role='list'],
+          ol[role='list'] {
+               list-style: none;
+               margin: 0;
+               padding: 0;
+          }
+
+          img,
+          picture {
+               max-width: 100%;
+               display: block;
+          }
+
+          svg {
+               height: 2ex;
+               width: auto;
+               flex: none;
+               fill: currentColor;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+               html:focus-within {
+                    scroll-behavior: auto;
+               }
+
+               *,
+               *::before,
+               *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
+               }
+          }
+
+          section {
+               padding-block: 2rem;
+          }
+
+          /*------------------------------------*\
+  #UTILITIES
+\*------------------------------------*/
+          .container {
+               width: min(100% - 2rem, 60rem);
+               margin-inline: auto;
+          }
+
+          .grid-flow {
+               display: grid;
+               align-content: start;
+               gap: 1rem;
+          }
+
+          .flex-group {
                display: flex;
-               border-radius: 50%;
-               width: 50px;
-               /* Sesuaikan ukuran ikon sesuai kebutuhan Anda */
-               height: 50px;
-               /* Sesuaikan ukuran ikon sesuai kebutuhan Anda */
+               align-items: center;
+               flex-wrap: wrap;
+               gap: 0.5rem;
+          }
 
+          .box {
+               width: 100px;
+               aspect-ratio: 1 / 1;
+               border: 1px solid #f2f2f2;
+               border-radius: 0.2em;
+          }
 
+          .section-title {
+               font-size: var(--fs-800);
+               text-align: center;
+               text-transform: uppercase;
+               letter-spacing: 0.05em;
+          }
+
+          /*------------------------------------*\
+  #PROJECTS
+\*------------------------------------*/
+          .projects {
+               counter-reset: project;
+          }
+
+          .project {
+               --_border-radius: 0.35rem;
+               display: grid;
+               grid-template-columns: 1fr;
+               grid-template-areas:
+                    "image"
+                    "content";
+               gap: 2rem;
+               padding-block: 2rem 3.5rem;
+               counter-increment: project;
+               position: relative;
+          }
+
+          .project:where(:not(:last-child))::after {
+               --_divider-offset: 30%;
+               content: "";
+               position: absolute;
+               inset: auto var(--_divider-offset) 0 var(--_divider-offset);
+               border: 1px solid var(--clr-neutral-600);
+          }
+
+          @media (width > 50em) {
+               .project {
+                    grid-template-columns: 1fr 1fr;
+               }
+
+               .project:nth-child(odd) {
+                    grid-template-areas:
+                         "image content";
+               }
+
+               .project:nth-child(even) {
+                    grid-template-areas:
+                         "content image";
+               }
+          }
+
+          .project__img-container {
+               grid-area: image;
+               border-radius: var(--_border-radius);
+               position: relative;
+               isolation: isolate;
+               width: 100%;
+               aspect-ratio: 16 / 10;
+          }
+
+          @media (width < 50em) {
+               .project__img-container {
+                    overflow: hidden;
+               }
+          }
+
+          .project__img-container::before {
+               content: "";
+               position: absolute;
+               inset: 0;
+               border: 0.5rem solid var(--clr-primary-300);
+               border-radius: var(--_border-radius);
+               transform: translate(-1rem, 1rem);
+               z-index: -1;
+          }
+
+          .project__img {
+               width: 100%;
+               height: 100%;
+               object-fit: cover;
+               border-radius: var(--_border-radius);
+               filter: grayscale(80%);
+               transition: filter var(--transition);
+               box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.15);
+          }
+
+          .project:is(:hover, :focus-within) .project__img {
+               filter: grayscale(0%);
+          }
+
+          .project__content {
+               grid-area: content;
+          }
+
+          .project__title {
+               font-size: var(--fs-700);
+          }
+
+          .project__title::before {
+               content: "Project " counters(project, ".", decimal-leading-zero) " ";
+               display: block;
+               text-transform: uppercase;
+               font-size: var(--fs-600);
+               font-family: var(--ff-primary);
+               color: var(--clr-neutral-400);
+               margin-bottom: 0.25em;
+          }
+
+          .project__tag {
+               padding: 0.25em 0.5em;
+               background-color: var(--clr-neutral-600);
+               color: var(--clr-neutral-300);
+               border-radius: 0.25em;
+
+               font-size: var(--fs-300);
+               text-transform: uppercase;
+               letter-spacing: 0.1em;
+               line-height: 1;
+          }
+
+          .project__cta {
+               position: relative;
+               width: fit-content;
+               display: inline-flex;
+               gap: 0.35em;
+
+               color: var(--clr-primary-200);
+               font-family: var(--ff-secondary);
+               font-weight: var(--fw-bold);
+               text-transform: capitalize;
+               text-decoration: none;
+          }
+
+          .project__cta::after {
+               content: "➜";
+               color: inherit;
+               opacity: 0;
+               transition: var(--transition);
+               transition-property: opacity, transform;
+          }
+
+          .project__cta:is(:hover, :focus)::after {
+               transform: translateX(5px);
+               opacity: 1;
           }
      </style>
      <title>My Porfolio</title>
@@ -97,7 +380,7 @@
      <header>
           <div class="container-lg mt-4 py-lg-5">
                <div class="row justify-content-md-center my-lg-5">
-                    <div class="col-lg-6 text-lg-start text-md-center text-center col-md-12 p-3 p-lg-5 ">
+                    <div class="col-lg-8 text-lg-start text-md-center text-center col-md-12 p-3 p-lg-5 ">
                          <h2 class="title">My Portfolio Project</h2>
                          <p class="mt-4 mt-md-4 mt-lg-0 px-0 px-sm-4 px-md-4 px-lg-0">Halo !! Perkenalkan Nama saya
                               Mario dan ini adalah website portofolio yang
@@ -126,7 +409,7 @@
                               </div>
                          </div>
                     </div>
-                    <div class="col-lg-6 col-md-12 text-center text-lg-end mt-md-3 mt-3 mt-lg-0">
+                    <div class="col-lg-4 col-md-12 text-center text-lg-end mt-md-3 mt-3 mt-lg-0">
                          <img src="/assets/images/profile_picture.jpeg" class="img-fluid image-profile rounded-circle"
                               alt="">
                          <div class="row d-block d-lg-none">
@@ -160,472 +443,174 @@
      </header>
 
 
-     <main class="mt-5" id="content-project">
-          <!-- Studynest -->
-          <div class="container mb-5">
-               <hr>
-               <!-- devlearn -->
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>Studynest</h2>
-
-                         </div>
+     <section>
+          <div class="projects container">
+               <h2 class="section-title">Projects</h2>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/studynest.png' alt=''>
                     </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Pengalaman Belajar yang Lebih Asik dan Terstruktur
-
-                              Tingkatkan pengalaman belajar dengan memanfaatkan teknik-teknik yang terbukti efektif
-                              dengan StudyNest.
-                              StudyNest merupakan platform yang dapat mendukung kebutuhan akademis siswa dan mahasiswa
-                              untuk menemukan metode
-                              pembelajaran agar pengalaman belajar menjadi lebih terstruktur dan memotivasi.
-
-                              Projek ini dibangun menggunakan Framework PHP Laravel 10 , Tailwind CSS , dan Alpine JS
-                              sebagai Framework dari tailwind CSS.
-                         </p>
-                         <a href="https://studynest.dnccudinus.org/" target="blank"
-                              class="fs-6 text-decoration-none "><i class="bi bi-globe"></i> Link Website</a>
-                         <br>
-                    </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-                         <div id="carouselMarketplaceEID" class="carousel slide" data-bs-ride="carousel">
-                              <div class="carousel-inner">
-                                   <div class="carousel-item active">
-                                        <img src="assets/images/studynest.png" class="d-block w-100 rounded-3"
-                                             alt="...">
-                                   </div>
-
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-          <!-- end jurnalin -->
-          <!-- jurnalin -->
-          <div class="container mb-5">
-               <hr>
-               <!-- devlearn -->
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>Jurnalin | Better Financial Management</h2>
-
-                         </div>
-                    </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Jurnalin merupakan aplikasi keuangan akuntansi berbasis website dengan fitur utamanya
-                              yaitu jurnal umum, dibuat dengan
-                              Laravel 9, Inertia, Vue 3, Tailwind.
-
-                              Fitur yang terdapat pada sistem ini adalah :
-                              <br>
-                         <ul>
-                              <li>Laporan Keuangan</li>
-                              <li>POS (Kasir)</li>
-                              <li>Penjualan</li>
-                              <li>Pembelian</li>
-                              <li>Pengeluaran</li>
-                              <li>Jurnal Umum (Buku Besar)</li>
-                              <li>Akun (COA - Chart of Account)</li>
-                              <li>Kategori Akun</li>
-                              <li>Role &amp; Permission Setting</li>
-                              <li>User Setting</li>
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">StudyNest</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Laravel</li>
+                              <li class="project__tag">TailWind CSS</li>
+                              <li class="project__tag">Alphine JS</li>
                          </ul>
+                         <p>StudyNest merupakan platform aplikasi pendamping belajar untuk pengalaman belajar dengan
+                              memanfaatkan teknik-teknik yang
+                              terbukti efektif</p>
+                         <a class="project__cta" href="https://studynest.dnccudinus.org/" target="_blank"
+                              rel="noopener noreferrer">View
+                              project</a>
+                    </div>
+               </article>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/jurnalin-.png' alt=''>
+                    </div>
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Jurnalin</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Laravel</li>
+                              <li class="project__tag">TailWind CSS</li>
+                              <li class="project__tag">Vue JS</li>
+                         </ul>
+                         <p>Jurnalin merupakan aplikasi keuangan akuntansi berbasis website dengan fitur utamanya yaitu
+                              Management Keuangan Jurnal Umum untuk mengatur pembukuan
 
                          </p>
-                         <a href="https://jurnalin.dnccudinus.org/" target="blank" class="fs-6 text-decoration-none "><i
-                                   class="bi bi-globe"></i> Link Website</a>
-                         <br>
+                         <a class="project__cta" href="https://jurnalin.dnccudinus.org/" target="_blank"
+                              rel="noopener noreferrer">View
+                              project</a>
                     </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-                         <div id="carouselMarketplaceEID" class="carousel slide" data-bs-ride="carousel">
-                              <div class="carousel-inner">
-                                   <div class="carousel-item active">
-                                        <img src="assets/images/jurnalin1.png" class="d-block w-100 rounded-3"
-                                             alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/jurnalin2.png" class="d-block w-100 rounded-3"
-                                             alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/jurnalin3.png" class="d-block w-100 rounded-3"
-                                             alt="...">
-                                   </div>
-
-                                   <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselMarketplaceEID" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                   </button>
-                                   <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carouselMarketplaceEID" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                   </button>
-                              </div>
-                         </div>
+               </article>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/sirekam.png' alt=''>
                     </div>
-               </div>
-          </div>
-          <!-- end jurnalin -->
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Sirekam</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Laravel</li>
+                              <li class="project__tag">TailWind CSS</li>
+                         </ul>
+                         <p>Sirekam merupakan aplikasi yang digunakan untuk management data satuan kredit kegiatan
+                              mahasiswa yang digunakan di Poltekkes Yogyakarta
 
-
-          <!-- dinacom -->
-          <div class="container mb-5">
-               <hr>
-               <!-- devlearn -->
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>Dinacom Dian Nuswantoro Computer Club</h2>
-                              <h5>Web Registrasi Lomba by Dian Nuswantoro Computer Club</h3>
-                         </div>
-                    </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Website DINACOM DNCC ini merupakan website yang dibuat untuk pendaftaran peserta
-                              perlombaan DINACOM yang diadakan oleh DNCC
-                              <br>
-                              <br>
-                              Website ini digunakan untuk peserta dan admin dalam melakukan pendaftaran dan pengecekan
-                              berkas yang digunakan untuk perlombaan DINACOM.
-                              <br>
-                              <br>
-                              Projek ini dibangun menggunakan Framework PHP Laravel 9.5 , Tailwind CSS , dan Flowbite
-                              sebagai Framework dari tailwind CSS.
                          </p>
-                         <a href="https://dinacom.dnccudinus.org/" target="blank" class="fs-6 text-decoration-none "><i
-                                   class="bi bi-globe"></i> Link Website</a>
-                         <br>
+                         <a class="project__cta" href="https://sirekampolkesyogya.com/" target="_blank"
+                              rel="noopener noreferrer">View
+                              project</a>
                     </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-                         <div id="carouselMarketplaceEID" class="carousel slide" data-bs-ride="carousel">
-                              <div class="carousel-inner">
-                                   <div class="carousel-item active">
-                                        <img src="assets/images/dinacom1.png" class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/dinacom2.png" class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/dinacom3.png" class="d-block w-100 rounded-3" alt="...">
-                                   </div>
+               </article>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/dinacom.jpg' alt=''>
+                    </div>
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Dinacom DNCC</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Laravel</li>
+                              <li class="project__tag">Flowbite</li>
+                              <li class="project__tag">TailWind CSS</li>
+                         </ul>
+                         <p>Website ini dirancang khusus untuk memfasilitasi pendaftaran peserta dan pengelolaan berkas
+                              terkait perlombaan DINACOM
+                              yang diselenggarakan oleh DNCC.
 
-                                   <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselMarketplaceEID" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                   </button>
-                                   <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carouselMarketplaceEID" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                   </button>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-          <!-- end dinacom -->
-          <!-- devlearn -->
-          <div class="container mb-5">
-               <hr>
-               <!-- devlearn -->
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>Devlearn Dian Nuswantoro Computer Club</h2>
-                              <h5>Learning Platform by Dian Nuswantoro Computer Club</h3>
-                         </div>
-                    </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Aplikasi Devlearn Dian Nuswantoro Computer Club ini merupakan aplikasi learning platform
-                              yang dibuat oleh saya dan 3 teman dari DNCC.
-                              <br>
-                              <br>
-                              Dengan Website ini para pelajar mahasiswa bisa mencari akses pembelajaran mengenai coding
-                              , pemrogaman dengan lebih mudah. Dan bagi
-                              mahasiswa yang sudah jago untuk mengajari , bisa menjadi author juga dan membuat video
-                              learning .
-                              <br>
-                              <br>
-                              Projek ini dibangun menggunakan Framework PHP Laravel 9.5 , Tailwind CSS , dan Flowbite
-                              sebagai Framework dari tailwind CSS.
                          </p>
-                         <a href="https://learn.dnccudinus.org/" target="blank" class="fs-6 text-decoration-none "><i
-                                   class="bi bi-globe"></i> Link Website</a>
-                         <br>
+                         <a class="project__cta" href="exmaple.com" target="_blank" rel="noopener noreferrer">View
+                              project</a>
                     </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-                         <div id="carouselMarketplaceEID" class="carousel slide" data-bs-ride="carousel">
-                              <div class="carousel-inner">
-                                   <div class="carousel-item active">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_ (1).png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_ (2).png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_ (3).png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_ (4).png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_course_3.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_course_3 (1).png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_lesson_3_1.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_dashboard.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_profile.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_transaction.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/devlearn/learn.dnccudinus.org_course.png"
-                                             class="d-block w-100 rounded-3" alt="...">
+               </article>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/devlearn.png' alt=''>
+                    </div>
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Devlearn DNCC</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Laravel</li>
+                              <li class="project__tag">Flowbite</li>
+                              <li class="project__tag">TailWind CSS</li>
+                         </ul>
+                         <p>Devlearn ini merupakan learning platform yang ditunjukan kepada mahasiswa untuk berjualan
+                              video
+                              mengenai materi materi dalam bidang pemrograman!</p>
+                         <a class="project__cta" href="https://learn.dnccudinus.org/" target="_blank"
+                              rel="noopener noreferrer">View
+                              project</a>
+                    </div>
+               </article>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/getasan.png' alt=''>
+                    </div>
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Getasan APPS</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Flutter</li>
+                              <li class="project__tag">BLOC</li>
+                         </ul>
+                         <p>Getasan Apps merupakan aplikasi yang digunakan oleh Kecamatan Getasan di Kabupaten Semarang
+                              yang digunakan untuk penerimaan laporan dari warga!</p>
 
-                                   </div>
-                                   <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselMarketplaceEID" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                   </button>
-                                   <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carouselMarketplaceEID" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                   </button>
-                              </div>
-                         </div>
                     </div>
-               </div>
-          </div>
-          <!-- end devlearn -->
+               </article>
 
-          <!-- Rent Car-->
-          <div class="container mb-5">
-               <hr>
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>AutoRent Car</h2>
-                         </div>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/mitraseragam.png' alt=''>
                     </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Aplikasi AutoRent ini saya buat sebagai syarat untuk UAS matakuliah pemrogaman SKPL.
-                              Jadi
-                              website ini berisi tentang
-                              Management Rental Mobil. Terdiri dari User dan Admin
-                              <br>
-                              <br>
-                              Dengan Website ini Para owner rental mobil lebih mudah dan menghemat waktu dalam
-                              mengelola
-                              keuangan dan mobil-mobilnya
-                              <br>
-                              <br>
-                              Projek ini dibangun menggunakan Framework PHP Laravel 9.5 , html,css,bootstrap 5
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Mitra Seragam</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">HTML</li>
+                              <li class="project__tag">Bootstrap 5</li>
+                         </ul>
+                         <p>Mitra Seragam ini merupakan Website Katalog untuk penjualan seragam di
+                              Toko Mitra Seragama yang berada
+                              di pasar Johar
+
+                              Dengan menggunakan katalog ini, para orang tua lebih mudah untuk mengakses berapa harga
+                              dan ketersediaan ukuran dari
+                              seragaman anakanya
                          </p>
-                         <a href="https://github.com/marioapn3/rental_mobil_laravel" target="blank"
-                              class="fs-6 text-decoration-none "><i class="bi bi-github"></i> Link Source Code</a>
-                         <br>
+                         <a class="project__cta" href="mitraSeragam/index.html" target="_blank"
+                              rel="noopener noreferrer">View
+                              project</a>
                     </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-                         <div id="carouselPena" class="carousel slide" data-bs-ride="carousel">
-                              <div class="carousel-inner">
-                                   <div class="carousel-item active">
-                                        <img src="assets/images/project/rentcar/127.0.0.1_8000_ (1).png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/rentcar/127.0.0.1_8000_.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/rentcar/127.0.0.1_8000_contact.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/rentcar/127.0.0.1_8000_car_2_.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/rentcar/127.0.0.1_8000_car_2_ (1).png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-
-                                   <div class="carousel-item">
-                                        <img src="assets/images/project/rentcar/127.0.0.1_8000_admin_dashboardcar.png"
-                                             class="d-block w-100 rounded-3" alt="...">
-                                   </div>
-
-                              </div>
-                              <button class="carousel-control-prev" type="button" data-bs-target="#carouselPena"
-                                   data-bs-slide="prev">
-                                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                   <span class="visually-hidden">Previous</span>
-                              </button>
-                              <button class="carousel-control-next" type="button" data-bs-target="#carouselPena"
-                                   data-bs-slide="next">
-                                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                   <span class="visually-hidden">Next</span>
-                              </button>
-                         </div>
+               </article>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/ui compas.png' alt=''>
                     </div>
-               </div>
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Kompas Clone</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Flutter</li>
+                         </ul>
+                         <p>Kompas Clone ini merupakan clone dari aplikasi kompas mobile menggunakan flutter untuk
+                              pembelajaran flutter dasar di SMK 8 Semarang</p>
+
+                    </div>
+               </article>
+               <article class="project">
+                    <div class="project__img-container">
+                         <img class="project__img" src='assets/images/list_project/search_doctor.png' alt=''>
+                    </div>
+                    <div class="project__content grid-flow">
+                         <h3 class="project__title">Search Doctor</h3>
+                         <ul class="project__tags flex-group" role="list">
+                              <li class="project__tag">Flutter</li>
+                         </ul>
+                         <p>Search Doctor ini merupakan UI Flutter untuk aplikasi pencarian dan konsultasi dokter.</p>
+
+                    </div>
+               </article>
           </div>
-          <!-- End Rent Car-->
-
-          <!-- Mitra Seragam -->
-          <div class="container mb-5">
-               <hr>
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>Mitra Seragam</h2>
-                         </div>
-                    </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Aplikasi Mitra Seragam ini merupakan aplikasi Website Katalog untuk penjualan seragam
-                              di Toko Mitra Seragama
-                              yang berada di pasar Johar
-                              <br>
-                              <br>
-                              Dengan menggunakan katalog ini, para orang tua lebih mudah untuk mengakses berapa
-                              harga dan ketersediaan ukuran
-                              dari seragaman anakanya
-                              <br>
-                              <br>
-                              Projek ini dibangun menggunakan HTML , CSS , Vanila JS ,dan Bootstrap
-                         </p>
-                         <a href="https://github.com/marioapn3/school_uniform_online_shop-html-css-js" target="blank"
-                              class="fs-6 text-decoration-none "><i class="bi bi-github"></i> Link Source Code</a>
-                         <br>
-                         <a href="mitraSeragam/index.html" class="fs-6 text-decoration-none"><i
-                                   class="bi bi-globe2"></i> Tampilan Website</a>
-                         <br>
-                    </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-
-                         <img src="assets/images/mitraseragam.png" class="d-block w-100 rounded-3" alt="...">
-
-                    </div>
-               </div>
-          </div>
-          <!-- END Mitra Seragam -->
-          <!-- Kompas -->
-          <div class="container mb-5">
-               <hr>
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>Kompas Clone UI</h2>
-                         </div>
-                    </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Aplikasi Ini merupakan Kompas Clone yang digunakan sebagai dasar dalam acara proker DNCC
-                              bernama GTS ( DNCC Goes To Schoool)
-                              <br>
-                              <br>
-                              Aplikasi ini digunakan sebagai acuan DNCC Divisi Mobile dalam mengajar anak - anak SMK 8
-                              Semarang , dalam
-                              pemrogaman Mobile Flutter
-                              <br>
-                              <br>
-                              Projek ini dibangun menggunakan Flutter
-                         </p>
-                         <a href="https://github.com/marioapn3/slicing_ui_kompas_clone" target="blank"
-                              class="fs-6 text-decoration-none "><i class="bi bi-github"></i> Link Source Code</a>
-                         <br>
-                    </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-
-                         <img src="assets/images/ui compas.png" class="d-block w-100 rounded-3" alt="...">
-
-                    </div>
-               </div>
-          </div>
-          <!-- End Kompas -->
-          <!-- Search Doctor -->
-          <div class="container mb-5">
-               <hr>
-               <div class="row">
-                    <div class="col-12 d-flex justify-content-center justify-content-lg-start">
-                         <div class="content">
-                              <h2>Search Doctor</h2>
-                         </div>
-                    </div>
-               </div>
-               <div class="row mt-4">
-                    <div class="col-md-6  align-self-center" align="justify">
-                         <p>
-                              Aplikasi Ini merupakan aplikasi yang digunakan untuk mencari dan membuat penjadwalan
-                              untuk bertemu dengan doctor
-                              <br>
-                              <br>
-                              Aplikasi ini sedang dalam pengembagan dan masih menjadi Tampilan UI saja tanpa backend
-                              <br>
-                              <br>
-                              Projek ini dibangun menggunakan Flutter
-                         </p>
-                         <a href="https://github.com/marioapn3/FlutterSearchDoctor" target="blank"
-                              class="fs-6 text-decoration-none "><i class="bi bi-github"></i> Link Source Code</a>
-                         <br>
-                    </div>
-                    <div class="col-md-6 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
-
-                         <img src="assets/images/search_doctor.png" class="d-block w-100 rounded-3" alt="...">
-
-                    </div>
-               </div>
-          </div>
-          <!-- END Search Doctor -->
-     </main>
-
+     </section>
 
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
